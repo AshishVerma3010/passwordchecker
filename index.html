@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CipherKey - Secure Password Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>CipherKey Generator 🛡️</h1>
+        
+        <div class="generator-container">
+            <input type="text" id="generatedPassword" placeholder="Click 'Generate' to create a password" readonly>
+            <button id="copyButton" title="Copy to clipboard"><i class="fa-regular fa-copy"></i></button>
+        </div>
+        
+        <div class="generator-settings">
+            <label for="passwordLength">Password Length:</label>
+            <span id="passwordLengthValue">16</span>
+            <input type="range" id="passwordLength" min="8" max="32" value="16">
+        </div>
+
+        <button id="generateButton" class="generate-btn">Generate Secure Password</button>
+
+        <div id="security-notice" class="security-notice">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Cryptographically Secure</span>
+        </div>
+
+        <hr class="divider">
+
+        <div class="input-container">
+            <input type="password" id="passwordInput" placeholder="Check your password's strength">
+            <i id="togglePassword" class="fa-regular fa-eye"></i>
+        </div>
+        
+        <div id="strength-feedback">
+            <div class="strength-bar-background">
+                <div id="strength-bar"></div>
+            </div>
+        </div>
+
+        <ul id="criteria-list">
+            <li id="length">
+                <i class="fa-regular fa-circle"></i>
+                <span>At least 8 characters long</span>
+            </li>
+            <li id="uppercase">
+                <i class="fa-regular fa-circle"></i>
+                <span>Contains at least one uppercase letter (A-Z)</span>
+            </li>
+            <li id="lowercase">
+                <i class="fa-regular fa-circle"></i>
+                <span>Contains at least one lowercase letter (a-z)</span>
+            </li>
+            <li id="number">
+                <i class="fa-regular fa-circle"></i>
+                <span>Contains at least one number (0-9)</span>
+            </li>
+            <li id="special">
+                <i class="fa-regular fa-circle"></i>
+                <span>Contains at least one special character (!@#$)</span>
+            </li>
+        </ul>
+
+        <footer class="footer">
+            <p class="owner-credit">Designed by <span class="owner-name">Ashish Verma</span></p>
+            <p class="copyright">&copy; 2025 Ashu. All Rights Reserved.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

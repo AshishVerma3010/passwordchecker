@@ -1,0 +1,287 @@
+/* General Styling */
+:root {
+    --bg-color: #1a1a2e;
+    --container-bg: #16213e;
+    --primary-accent: #0f3460;
+    --secondary-accent: #e94560;
+    --text-color: #e0e0e0;
+    --input-bg: #1f2a4a;
+    --border-color: #5372f0;
+    
+    --strength-weak: #e74c3c;
+    --strength-moderate: #f39c12;
+    --strength-strong: #2ecc71;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: var(--container-bg);
+    padding: 30px 35px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Password Generator */
+.generator-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+#generatedPassword {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    border: 1px solid var(--primary-accent);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 16px;
+    box-sizing: border-box;
+    text-align: left;
+    cursor: default;
+}
+
+#copyButton {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+#copyButton:hover {
+    color: var(--border-color);
+}
+
+/* Generator Settings */
+.generator-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+#passwordLengthValue {
+    font-weight: 600;
+    color: var(--border-color);
+    min-width: 25px; /* Ensures layout doesn't shift */
+    text-align: center;
+}
+#passwordLength {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 60%;
+    height: 8px;
+    background: var(--input-bg);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+#passwordLength::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--secondary-accent);
+    border-radius: 50%;
+    border: 2px solid var(--container-bg);
+}
+#passwordLength::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--secondary-accent);
+    border-radius: 50%;
+    border: 2px solid var(--container-bg);
+}
+
+
+.generate-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--secondary-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.generate-btn:hover {
+    background-color: #d83a56;
+}
+
+/* Security Notice Visualization */
+.security-notice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--strength-strong);
+    margin-top: 12px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    height: 0;
+    overflow: hidden;
+}
+
+.security-notice.visible {
+    opacity: 1;
+    transform: translateY(0);
+    height: auto;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--primary-accent), rgba(0, 0, 0, 0));
+    margin: 30px 0;
+}
+
+
+/* Password Input */
+.input-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+#passwordInput {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    border: 2px solid var(--primary-accent);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: #fff;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+#passwordInput:focus {
+    outline: none;
+    border-color: var(--border-color);
+}
+
+#togglePassword {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    color: #aaa;
+    transition: color 0.2s ease;
+}
+#togglePassword:hover {
+    color: var(--border-color);
+}
+
+
+/* Strength Feedback Bar */
+.strength-bar-background {
+    background-color: var(--input-bg);
+    height: 10px;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#strength-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 5px;
+    transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+
+/* Criteria Checklist */
+#criteria-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+#criteria-list li {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #a0a0a0;
+    transition: color 0.3s ease;
+}
+
+#criteria-list li i {
+    font-size: 16px;
+    width: 25px;
+    text-align: center;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
+
+#criteria-list li.valid {
+    color: var(--text-color);
+}
+
+#criteria-list li.valid i {
+    color: var(--strength-strong);
+}
+
+/* Footer Styling */
+.footer {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--primary-accent);
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+.owner-credit {
+    margin: 0 0 5px 0;
+}
+
+.owner-name {
+    font-weight: 600;
+    color: var(--secondary-accent);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.owner-name:hover {
+    color: #fff;
+}
+
+.copyright {
+    margin: 0;
+    font-size: 12px;
+}
