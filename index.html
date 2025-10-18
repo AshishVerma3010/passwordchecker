@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.png" type="image/png" />
     <title>CipherKey - Secure Password Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,6 +68,16 @@
                 <span>Contains at least one special character (!@#$)</span>
             </li>
         </ul>
+        
+        <div id="brute-force-info" class="brute-force-info">
+            <p><i class="fa-solid fa-stopwatch"></i> Time to Crack:</p>
+            <h2 id="crack-time-result">...</h2>
+        </div>
+
+        <div class="info-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Based on an attacker making 10 billion guesses/second.</span>
+        </div>
 
         <footer class="footer">
             <p class="owner-credit">Designed by <span class="owner-name">Ashish Verma</span></p>

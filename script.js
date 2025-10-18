@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateButton = document.getElementById('generateButton');
     const passwordLengthSlider = document.getElementById('passwordLength');
     const passwordLengthValue = document.getElementById('passwordLengthValue');
-    const securityNotice = document.getElementById('security-notice'); // New element
+    const securityNotice = document.getElementById('security-notice'); 
+
+    // Newly Added DOM element
+    const crackTimeResult = document.getElementById('crack-time-result');
 
     // Criteria mapping
     const criteria = {
@@ -24,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZE ---
     passwordLengthValue.textContent = passwordLengthSlider.value;
+    updateCrackTime(''); // Initialize crack time display
 
     // --- EVENT LISTENERS ---
 
@@ -38,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value;
         const strength = checkPasswordStrength(password);
         updateFeedback(strength);
+        updateCrackTime(password); // Call crack time updater
     });
 
     // Toggle password visibility
@@ -55,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         generatedPasswordField.value = newPassword;
         passwordInput.value = newPassword; // Also put in checker
         updateFeedback(checkPasswordStrength(newPassword)); // Update feedback for it
+        updateCrackTime(newPassword); // Call crack time updater
         securityNotice.classList.add('visible'); // Show security notice
     });
     
@@ -150,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const finalLength = Math.max(length, 8);
         const allChars = Object.values(charSets).join('');
         
-        // A helper function to get a crypto-secure random number
         const getRandomNumber = (max) => {
             const buffer = new Uint32Array(1);
             window.crypto.getRandomValues(buffer);
@@ -159,23 +164,105 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let passwordArray = [];
         
-        // Ensure at least one character from each set is included
         passwordArray.push(charSets.lowercase[getRandomNumber(charSets.lowercase.length)]);
         passwordArray.push(charSets.uppercase[getRandomNumber(charSets.uppercase.length)]);
         passwordArray.push(charSets.numbers[getRandomNumber(charSets.numbers.length)]);
         passwordArray.push(charSets.symbols[getRandomNumber(charSets.symbols.length)]);
 
-        // Fill the rest of the password length with random characters from the full set
         for (let i = 4; i < finalLength; i++) {
             passwordArray.push(allChars[getRandomNumber(allChars.length)]);
         }
 
-        // Shuffle the array using a secure method (Fisher-Yates shuffle)
         for (let i = passwordArray.length - 1; i > 0; i--) {
             const j = getRandomNumber(i + 1);
             [passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]];
         }
 
         return passwordArray.join('');
+    }
+
+    // --- Time Calculation Functions ---
+
+    /**
+     * Updates the crack time estimation in the UI.
+     * @param {string} password - The password to analyze.
+     */
+    function updateCrackTime(password) {
+        if (password.length === 0) {
+            crackTimeResult.textContent = '...';
+            return;
+        }
+        const timeToCrack = estimateBruteForceTime(password);
+        crackTimeResult.textContent = timeToCrack;
+    }
+
+    /**
+     * Estimates the time to brute-force a password based on character set and length.
+     * @param {string} password - The password to analyze.
+     * @returns {string} A human-readable string of the estimated time.
+     */
+    function estimateBruteForceTime(password) {
+        let characterSetSize = 0;
+        if (/[a-z]/.test(password)) characterSetSize += 26;
+        if (/[A-Z]/.test(password)) characterSetSize += 26;
+        if (/[0-9]/.test(password)) characterSetSize += 10;
+        if (/[^A-Za-z0-9]/.test(password)) characterSetSize += 32; // Common special chars
+
+        if (characterSetSize === 0) return 'Instantly';
+
+        const combinations = BigInt(characterSetSize) ** BigInt(password.length);
+        const guessesPerSecond = BigInt(10_000_000_000); // 10 billion guesses/sec
+
+        const secondsToCrack = combinations / guessesPerSecond;
+
+        return formatTime(secondsToCrack);
+    }
+
+    /**
+     * Formats a large number of seconds (as a BigInt) into a detailed, human-readable string.
+     * @param {BigInt} totalSeconds - The total seconds to format.
+     * @returns {string} The formatted time string.
+     */
+    function formatTime(totalSeconds) {
+        if (totalSeconds < BigInt(1)) return 'Instantly';
+
+        // UPDATED: Removed millennium and century
+        const timeUnits = [
+            { name: 'year', seconds: BigInt(31536000) },
+            { name: 'month', seconds: BigInt(2628000) },
+            { name: 'day', seconds: BigInt(86400) },
+            { name: 'hour', seconds: BigInt(3600) },
+            { name: 'minute', seconds: BigInt(60) },
+            { name: 'second', seconds: BigInt(1) }
+        ];
+
+        // For extraordinarily large numbers, provide a simplified estimate in years.
+        const SECONDS_IN_YEAR = BigInt(31536000);
+        const totalYears = totalSeconds / SECONDS_IN_YEAR;
+        
+        const trillion = BigInt("1000000000000");
+        const quadrillion = BigInt("1000000000000000");
+        const quintillion = BigInt("1000000000000000000");
+
+        if (totalYears >= quintillion) return `${(totalYears / quintillion).toLocaleString()} quintillion years`;
+        if (totalYears >= quadrillion) return `${(totalYears / quadrillion).toLocaleString()} quadrillion years`;
+        if (totalYears >= trillion) return `${(totalYears / trillion).toLocaleString()} trillion years`;
+
+
+        let remainingSeconds = totalSeconds;
+        const parts = [];
+
+        for (const unit of timeUnits) {
+            if (remainingSeconds >= unit.seconds) {
+                const count = remainingSeconds / unit.seconds;
+                parts.push({ count, name: unit.name });
+                remainingSeconds %= unit.seconds;
+            }
+        }
+
+        // Display the top 3 most significant units for readability
+        return parts.slice(0, 3)
+            .map(({ count, name }) => `${count} ${name}${count > 1 ? 's' : ''}`)
+            .join(', ');
     }
 });
